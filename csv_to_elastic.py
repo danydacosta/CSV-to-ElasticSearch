@@ -70,10 +70,17 @@ def main(file_path, delimiter, max_rows, elastic_index, json_struct, datetime_fi
 
     connection = http.client.HTTPConnection(elastic_address)
     headers = {"Content-type": "application/json", "Accept": "text/plain"}
-    connection.request('POST', url=endpoint, headers = headers, body=to_elastic_string)
+    connection.request('PUT', url=endpoint, headers = headers, body=to_elastic_string.encode('utf-8'))
     response = connection.getresponse()
     print("Returned status code:", response.status)
-    #body = response.read()
+
+    body = response.read()
+    
+    # Output logs
+    file = open("output.txt","w")  
+    file.write(body.decode("utf-8"))
+    file.close() 
+
     #print("Returned body:", body)
     return
 
